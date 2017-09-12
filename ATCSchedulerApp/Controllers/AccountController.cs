@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ATCSchedulerApp.Models;
-using ATCSchedulerApp.Models.AccountViewModels;
-using ATCSchedulerApp.Services;
+using ATCScheduler.Models;
+using ATCScheduler.Models.AccountViewModels;
+using ATCScheduler.Services;
 
-namespace ATCSchedulerApp.Controllers
+namespace ATCScheduler.Controllers
 {
     [Authorize]
     public class AccountController : Controller

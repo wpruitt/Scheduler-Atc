@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using ATCScheduler.Data;
 
-namespace ATCSchedulerApp.Data.Migrations
+namespace ATCScheduler.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -15,25 +13,234 @@ namespace ATCSchedulerApp.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc3")
+                .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ATCScheduler.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("State");
+
+                    b.Property<string>("StreetAddress");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("Zipcode");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.Appointment", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApproverId");
+
+                    b.Property<string>("ApproverNote");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<bool>("Medical");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("AppointmentId");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Appointment");
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.ATController", b =>
+                {
+                    b.Property<int>("ControllerId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("FlyingStatus");
+
+                    b.Property<int?>("ShiftId");
+
+                    b.Property<int>("SkillLevelId");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("ControllerId");
+
+                    b.HasIndex("ShiftId");
+
+                    b.HasIndex("SkillLevelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ATController");
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.Position", b =>
+                {
+                    b.Property<int>("PositionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ATControllerControllerId");
+
+                    b.Property<string>("Abbreviation")
+                        .IsRequired();
+
+                    b.Property<int?>("ShiftId");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.HasKey("PositionId");
+
+                    b.HasIndex("ATControllerControllerId");
+
+                    b.HasIndex("ShiftId");
+
+                    b.ToTable("Position");
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.Shift", b =>
+                {
+                    b.Property<int>("ShiftId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ATControllerId");
+
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.HasKey("ShiftId");
+
+                    b.ToTable("Shift");
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.SkillLevel", b =>
+                {
+                    b.Property<int>("SkillLevelId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("PositionId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("SkillLevelId");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("SkillLevel");
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.TimeOffRequest", b =>
+                {
+                    b.Property<int>("TimeOffRequestId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApproverId");
+
+                    b.Property<string>("ApproverNotes");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("End");
+
+                    b.Property<DateTime>("Start");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("TimeOffRequestId");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TimeOffRequest");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
+                        .IsUnique()
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
@@ -105,8 +312,6 @@ namespace ATCSchedulerApp.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUserRoles");
                 });
 
@@ -125,53 +330,62 @@ namespace ATCSchedulerApp.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ATCSchedulerApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ATCScheduler.Models.Appointment", b =>
                 {
-                    b.Property<string>("Id");
+                    b.HasOne("ATCScheduler.Models.ApplicationUser", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId");
 
-                    b.Property<int>("AccessFailedCount");
+                    b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+            modelBuilder.Entity("ATCScheduler.Models.ATController", b =>
+                {
+                    b.HasOne("ATCScheduler.Models.Shift")
+                        .WithMany("ATCControllers")
+                        .HasForeignKey("ShiftId");
 
-                    b.Property<string>("Email")
-                        .HasAnnotation("MaxLength", 256);
+                    b.HasOne("ATCScheduler.Models.SkillLevel", "SkillLevel")
+                        .WithMany()
+                        .HasForeignKey("SkillLevelId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.Property<bool>("LockoutEnabled");
+            modelBuilder.Entity("ATCScheduler.Models.Position", b =>
+                {
+                    b.HasOne("ATCScheduler.Models.ATController")
+                        .WithMany("QualifiedPositions")
+                        .HasForeignKey("ATControllerControllerId");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.HasOne("ATCScheduler.Models.Shift")
+                        .WithMany("RequiredPositions")
+                        .HasForeignKey("ShiftId");
+                });
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasAnnotation("MaxLength", 256);
+            modelBuilder.Entity("ATCScheduler.Models.SkillLevel", b =>
+                {
+                    b.HasOne("ATCScheduler.Models.Position")
+                        .WithMany("SkillLevels")
+                        .HasForeignKey("PositionId");
+                });
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasAnnotation("MaxLength", 256);
+            modelBuilder.Entity("ATCScheduler.Models.TimeOffRequest", b =>
+                {
+                    b.HasOne("ATCScheduler.Models.ApplicationUser", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId");
 
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers");
+                    b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -184,7 +398,7 @@ namespace ATCSchedulerApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ATCSchedulerApp.Models.ApplicationUser")
+                    b.HasOne("ATCScheduler.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -192,7 +406,7 @@ namespace ATCSchedulerApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ATCSchedulerApp.Models.ApplicationUser")
+                    b.HasOne("ATCScheduler.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -205,7 +419,7 @@ namespace ATCSchedulerApp.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ATCSchedulerApp.Models.ApplicationUser")
+                    b.HasOne("ATCScheduler.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

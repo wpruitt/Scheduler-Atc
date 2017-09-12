@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ATCSchedulerApp.Models;
-using ATCSchedulerApp.Models.ManageViewModels;
-using ATCSchedulerApp.Services;
+using ATCScheduler.Models;
+using ATCScheduler.Models.ManageViewModels;
+using ATCScheduler.Services;
 
-namespace ATCSchedulerApp.Controllers
+namespace ATCScheduler.Controllers
 {
     [Authorize]
     public class ManageController : Controller

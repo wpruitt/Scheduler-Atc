@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace ATCSchedulerApp.Models.ManageViewModels
+namespace ATCScheduler.Models.ManageViewModels
 {
     public class IndexViewModel
     {

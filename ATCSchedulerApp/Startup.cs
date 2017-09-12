@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ATCSchedulerApp.Data;
-using ATCSchedulerApp.Models;
-using ATCSchedulerApp.Services;
+using ATCScheduler.Data;
+using ATCScheduler.Models;
+using ATCScheduler.Services;
 
-namespace ATCSchedulerApp
+namespace ATCScheduler
 {
     public class Startup
     {

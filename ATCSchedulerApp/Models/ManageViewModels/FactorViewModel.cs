@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ATCSchedulerApp.Models.ManageViewModels
+namespace ATCScheduler.Models.ManageViewModels
 {
     public class FactorViewModel
     {
