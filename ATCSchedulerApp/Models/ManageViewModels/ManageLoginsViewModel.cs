@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace ATCSchedulerApp.Models.ManageViewModels
+namespace ATCScheduler.Models.ManageViewModels
 {
     public class ManageLoginsViewModel
     {

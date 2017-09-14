@@ -1,0 +1,30 @@
+@model ATCScheduler.Models.ATController
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ATController</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FlyingStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FlyingStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SkillLevel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SkillLevel.SkillLevelId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ControllerId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
