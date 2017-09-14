@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using ATCScheduler.Models;
 using ATCScheduler.Models.ManageViewModels;
 using ATCScheduler.Services;
+using ATCScheduler.Models.ViewModels;
 
 namespace ATCScheduler.Controllers
 {
@@ -340,6 +341,64 @@ namespace ATCScheduler.Controllers
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+
+        // Get: ApplicationUser Profile/Edit/{id}
+        public async Task<IActionResult> EditProfile(string id)
+        {
+            var CurrentUser = await GetCurrentUserAsync();
+            if (CurrentUser == null)
+            {
+                return View("Error");
+            }
+
+            EditProfileViewModel ProfileUser = new EditProfileViewModel(CurrentUser)
+            {
+                User = CurrentUser
+            };
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (ProfileUser.User == null)
+            {
+                return NotFound();
+            }
+            return View(ProfileUser);
+        }
+
+        // Post: Update ApplicationUser Profile/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(string id, EditProfileViewModel ProfileUser)
+        {
+            //if (ProfileUser == null)
+            //{
+            //    throw new ArgumentNullException(nameof(ProfileUser));
+            //}
+
+            var CurrentUser = await GetCurrentUserAsync();
+            CurrentUser.FirstName = ProfileUser.User.FirstName;
+            CurrentUser.LastName = ProfileUser.User.LastName;
+            CurrentUser.StreetAddress = ProfileUser.User.StreetAddress;
+            CurrentUser.City = ProfileUser.User.City;
+            CurrentUser.State = ProfileUser.User.State;
+            CurrentUser.Zipcode = ProfileUser.User.Zipcode;
+            CurrentUser.PhoneNumber = ProfileUser.User.PhoneNumber;
+
+            if (id != CurrentUser.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _userManager.UpdateAsync(CurrentUser);
+            }
+            return View(ProfileUser);
+        }
+
 
         #region Helpers
 

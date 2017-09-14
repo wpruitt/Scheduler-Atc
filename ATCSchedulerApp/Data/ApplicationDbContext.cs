@@ -34,5 +34,7 @@ namespace ATCScheduler.Data
         public DbSet<ATCScheduler.Models.SkillLevel> SkillLevel { get; set; }
 
         public DbSet<ATCScheduler.Models.TimeOffRequest> TimeOffRequest { get; set; }
+
+        public DbSet<ATCScheduler.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
