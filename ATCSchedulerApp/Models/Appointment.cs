@@ -32,8 +32,18 @@ namespace ATCScheduler.Models
 
         public string Description { get; set; }
 
+        [DefaultValue(0)]
+        public Status RequestStatus { get; set; }
+
         public virtual ApplicationUser Approver { get; set; }
 
         public string ApproverNote { get; set; }
+
+        public enum Status
+        {
+            Pending,
+            Approved,
+            Confirmed
+        }
     }
 }
