@@ -12,32 +12,30 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Medical)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RequestStatus)
-                </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Medical)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.RequestStatus)
+            </th>
         </tr>
+        
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                <a asp-action="Details" asp-route-id="@item.AppointmentId">@Html.DisplayFor(modelItem => item.Date)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartTime)
@@ -48,16 +46,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Medical)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.RequestStatus)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AppointmentId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.AppointmentId">Delete</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                @Html.DisplayNameFor(model => model.Description):
+            
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
         </tr>
 }
