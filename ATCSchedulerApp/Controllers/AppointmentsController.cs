@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ATCScheduler.Models;
 using ATCScheduler.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace ATCScheduler.Controllers
 {
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
 
         // GET: Appointments
@@ -58,6 +61,7 @@ namespace ATCScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
+                appointment.User = await GetCurrentUserAsync();
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -93,7 +97,7 @@ namespace ATCScheduler.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && appointment.User == await GetCurrentUserAsync())
             {
                 try
                 {
@@ -148,6 +152,11 @@ namespace ATCScheduler.Controllers
         private bool AppointmentExists(int id)
         {
             return _context.Appointment.Any(e => e.AppointmentId == id);
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }
