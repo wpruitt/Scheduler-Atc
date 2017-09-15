@@ -13,16 +13,16 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Start)
+                    @Html.DisplayNameFor(model => model.StartDate) | @Html.DisplayNameFor(model => model.StartTime)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.End)
+                    @Html.DisplayNameFor(model => model.EndDate) | @Html.DisplayNameFor(model => model.EndTime)
                 </th>
-                <th>
+                <th width="300">
                     @Html.DisplayNameFor(model => model.Description)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Status)
+                    @Html.DisplayNameFor(model => model.TORStatus)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ApproverNotes)
@@ -34,23 +34,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Start)
+                <a asp-action="Details" asp-route-id="@item.TimeOffRequestId">@Html.DisplayFor(modelItem => item.StartDate) | @Html.DisplayFor(modelItem => item.StartTime)</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.End)
+                @Html.DisplayFor(modelItem => item.EndDate) | @Html.DisplayFor(modelItem => item.EndTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.TORStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ApproverNotes)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TimeOffRequestId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.TimeOffRequestId">Delete</a>
             </td>
         </tr>

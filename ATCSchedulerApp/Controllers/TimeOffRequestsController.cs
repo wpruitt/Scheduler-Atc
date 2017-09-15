@@ -5,27 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATCScheduler.Models;
 using ATCScheduler.Data;
+using ATCScheduler.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ATCScheduler.Controllers
 {
     public class TimeOffRequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TimeOffRequestsController(ApplicationDbContext context)
+        public TimeOffRequestsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
 
-        // GET: TimeOffRequests
+        // GET: TimeOffRequests1
         public async Task<IActionResult> Index()
         {
             return View(await _context.TimeOffRequest.ToListAsync());
         }
 
-        // GET: TimeOffRequests/Details/5
+        // GET: TimeOffRequests1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,21 +46,23 @@ namespace ATCScheduler.Controllers
             return View(timeOffRequest);
         }
 
-        // GET: TimeOffRequests/Create
+        // GET: TimeOffRequests1/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: TimeOffRequests/Create
+        // POST: TimeOffRequests1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TimeOffRequestId,Start,End,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
+        public async Task<IActionResult> Create([Bind("TimeOffRequestId,StartDate,StartTime,EndDate,EndTime,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
         {
+            timeOffRequest.User = await GetCurrentUserAsync();
             if (ModelState.IsValid)
             {
+                
                 _context.Add(timeOffRequest);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -65,7 +70,7 @@ namespace ATCScheduler.Controllers
             return View(timeOffRequest);
         }
 
-        // GET: TimeOffRequests/Edit/5
+        // GET: TimeOffRequests1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,12 +86,12 @@ namespace ATCScheduler.Controllers
             return View(timeOffRequest);
         }
 
-        // POST: TimeOffRequests/Edit/5
+        // POST: TimeOffRequests1/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TimeOffRequestId,Start,End,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("TimeOffRequestId,StartDate,StartTime,EndDate,EndTime,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
         {
             if (id != timeOffRequest.TimeOffRequestId)
             {
@@ -97,6 +102,7 @@ namespace ATCScheduler.Controllers
             {
                 try
                 {
+                    timeOffRequest.TORStatus = 0;
                     _context.Update(timeOffRequest);
                     await _context.SaveChangesAsync();
                 }
@@ -116,7 +122,7 @@ namespace ATCScheduler.Controllers
             return View(timeOffRequest);
         }
 
-        // GET: TimeOffRequests/Delete/5
+        // GET: TimeOffRequests1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +140,7 @@ namespace ATCScheduler.Controllers
             return View(timeOffRequest);
         }
 
-        // POST: TimeOffRequests/Delete/5
+        // POST: TimeOffRequests1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -148,6 +154,11 @@ namespace ATCScheduler.Controllers
         private bool TimeOffRequestExists(int id)
         {
             return _context.TimeOffRequest.Any(e => e.TimeOffRequestId == id);
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }
