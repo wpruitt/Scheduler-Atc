@@ -101,6 +101,7 @@ namespace ATCScheduler.Controllers
             {
                 try
                 {
+                    appointment.RequestStatus = 0;
                     _context.Update(appointment);
                     await _context.SaveChangesAsync();
                 }

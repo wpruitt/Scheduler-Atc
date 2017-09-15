@@ -102,6 +102,7 @@ namespace ATCScheduler.Controllers
             {
                 try
                 {
+                    timeOffRequest.TORStatus = 0;
                     _context.Update(timeOffRequest);
                     await _context.SaveChangesAsync();
                 }
