@@ -9,9 +9,10 @@ using ATCScheduler.Models;
 namespace ATCScheduler.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170914214417_created-new-timedate-params-for-TOR")]
+    partial class creatednewtimedateparamsforTOR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -216,9 +217,10 @@ namespace ATCScheduler.Data.Migrations
 
                     b.Property<DateTime>("StartTime");
 
-                    b.Property<int>("TORStatus");
+                    b.Property<string>("Status");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("TimeOffRequestId");
 
@@ -390,7 +392,8 @@ namespace ATCScheduler.Data.Migrations
 
                     b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

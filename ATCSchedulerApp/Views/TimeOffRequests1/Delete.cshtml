@@ -1,15 +1,17 @@
 @model ATCScheduler.Models.TimeOffRequest
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
-<h2>Details</h2>
+<h2>Delete</h2>
 
+<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>TimeOffRequest</h4>
     <hr />
     <dl class="dl-horizontal">
+        <input type="hidden" asp-for="TimeOffRequestId" />
         <dt>
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
@@ -41,10 +43,10 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.TORStatus)
+            @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TORStatus)
+            @Html.DisplayFor(model => model.Status)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ApproverNotes)
@@ -53,8 +55,11 @@
             @Html.DisplayFor(model => model.ApproverNotes)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.TimeOffRequestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
 </div>
