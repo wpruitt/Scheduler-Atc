@@ -59,7 +59,7 @@ namespace ATCScheduler.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TimeOffRequestId,StartDate,StartTime,EndDate,EndTime,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
         {
-            timeOffRequest.User = await GetCurrentUserAsync();
+            timeOffRequest.userId = GetCurrentUserAsync().Result.Id;
             if (ModelState.IsValid)
             {
                 

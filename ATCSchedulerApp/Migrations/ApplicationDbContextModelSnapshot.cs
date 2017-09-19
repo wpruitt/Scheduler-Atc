@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using ATCScheduler.Data;
+using ATCScheduler.Models;
 
-namespace ATCScheduler.Data.Migrations
+namespace ATCScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170912184836_Initial")]
-    partial class Initial
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -96,15 +96,15 @@ namespace ATCScheduler.Data.Migrations
 
                     b.Property<bool>("Medical");
 
+                    b.Property<int>("RequestStatus");
+
                     b.Property<DateTime>("StartTime");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("userId");
 
                     b.HasKey("AppointmentId");
 
                     b.HasIndex("ApproverId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Appointment");
                 });
@@ -120,7 +120,7 @@ namespace ATCScheduler.Data.Migrations
 
                     b.Property<int>("SkillLevelId");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("userId")
                         .IsRequired();
 
                     b.HasKey("ControllerId");
@@ -128,8 +128,6 @@ namespace ATCScheduler.Data.Migrations
                     b.HasIndex("ShiftId");
 
                     b.HasIndex("SkillLevelId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ATController");
                 });
@@ -206,20 +204,21 @@ namespace ATCScheduler.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<DateTime>("End");
+                    b.Property<DateTime>("EndDate");
 
-                    b.Property<DateTime>("Start");
+                    b.Property<DateTime>("EndTime");
 
-                    b.Property<string>("Status");
+                    b.Property<DateTime>("StartDate");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<DateTime>("StartTime");
+
+                    b.Property<int>("TORStatus");
+
+                    b.Property<string>("userId");
 
                     b.HasKey("TimeOffRequestId");
 
                     b.HasIndex("ApproverId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("TimeOffRequest");
                 });
@@ -336,10 +335,6 @@ namespace ATCScheduler.Data.Migrations
                     b.HasOne("ATCScheduler.Models.ApplicationUser", "Approver")
                         .WithMany()
                         .HasForeignKey("ApproverId");
-
-                    b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ATCScheduler.Models.ATController", b =>
@@ -351,11 +346,6 @@ namespace ATCScheduler.Data.Migrations
                     b.HasOne("ATCScheduler.Models.SkillLevel", "SkillLevel")
                         .WithMany()
                         .HasForeignKey("SkillLevelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -382,11 +372,6 @@ namespace ATCScheduler.Data.Migrations
                     b.HasOne("ATCScheduler.Models.ApplicationUser", "Approver")
                         .WithMany()
                         .HasForeignKey("ApproverId");
-
-                    b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

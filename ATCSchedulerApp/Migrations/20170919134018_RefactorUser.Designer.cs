@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using ATCScheduler.Data;
 using ATCScheduler.Models;
 
-namespace ATCScheduler.Data.Migrations
+namespace ATCScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170914214417_created-new-timedate-params-for-TOR")]
-    partial class creatednewtimedateparamsforTOR
+    [Migration("20170919134018_RefactorUser")]
+    partial class RefactorUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -217,10 +217,9 @@ namespace ATCScheduler.Data.Migrations
 
                     b.Property<DateTime>("StartTime");
 
-                    b.Property<string>("Status");
+                    b.Property<int>("TORStatus");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("TimeOffRequestId");
 
@@ -392,8 +391,7 @@ namespace ATCScheduler.Data.Migrations
 
                     b.HasOne("ATCScheduler.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
