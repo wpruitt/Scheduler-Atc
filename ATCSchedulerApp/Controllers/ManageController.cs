@@ -343,7 +343,7 @@ namespace ATCScheduler.Controllers
         }
 
         // Get: ApplicationUser Profile/Edit/{id}
-        public async Task<IActionResult> EditProfile(string id)
+        public async Task<IActionResult> EditProfile()
         {
             var CurrentUser = await GetCurrentUserAsync();
             if (CurrentUser == null)
@@ -356,11 +356,6 @@ namespace ATCScheduler.Controllers
                 User = CurrentUser
             };
 
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             if (ProfileUser.User == null)
             {
                 return NotFound();
@@ -371,7 +366,7 @@ namespace ATCScheduler.Controllers
         // Post: Update ApplicationUser Profile/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProfile(string id, EditProfileViewModel ProfileUser)
+        public async Task<IActionResult> EditProfile(EditProfileViewModel ProfileUser)
         {
             //if (ProfileUser == null)
             //{
@@ -386,11 +381,6 @@ namespace ATCScheduler.Controllers
             CurrentUser.State = ProfileUser.User.State;
             CurrentUser.Zipcode = ProfileUser.User.Zipcode;
             CurrentUser.PhoneNumber = ProfileUser.User.PhoneNumber;
-
-            if (id != CurrentUser.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {

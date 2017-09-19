@@ -13,7 +13,7 @@ namespace ATCScheduler.Models
         public int ControllerId { get; set; }
 
         [Required]
-        public virtual ApplicationUser User { get; set; }
+        public string userId { get; set; }
 
         [Required]
         public int SkillLevelId { get; set; }

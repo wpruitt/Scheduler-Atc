@@ -25,7 +25,7 @@ namespace ATCScheduler.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Appointment.ToListAsync());
+            return View(await _context.Appointment.Where(a => a.userId == GetCurrentUserAsync().Result.Id).ToListAsync());
         }
 
         // GET: Appointments/Details/5
@@ -61,7 +61,7 @@ namespace ATCScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-                appointment.User = await GetCurrentUserAsync();
+                appointment.userId = GetCurrentUserAsync().Result.Id;
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -77,7 +77,7 @@ namespace ATCScheduler.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointment.SingleOrDefaultAsync(m => m.AppointmentId == id);
+            var appointment = await _context.Appointment.SingleOrDefaultAsync(m => m.AppointmentId == id && m.userId == GetCurrentUserAsync().Result.Id);
             if (appointment == null)
             {
                 return NotFound();
@@ -90,14 +90,14 @@ namespace ATCScheduler.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,Date,StartTime,EndTime,Medical,Description,ApproverNote")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,Date,StartTime,EndTime,Medical,Description,ApproverNote,userId")] Appointment appointment)
         {
             if (id != appointment.AppointmentId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid && appointment.User == await GetCurrentUserAsync())
+            if (ModelState.IsValid && appointment.userId == GetCurrentUserAsync().Result.Id)
             {
                 try
                 {
