@@ -13,7 +13,9 @@ namespace ATCScheduler.Models
         [Key]
         public int TimeOffRequestId { get; set; }
 
-        public string userId { get; set; }
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

@@ -1,0 +1,101 @@
+﻿@model ATCScheduler.Models.ViewModels.AppointmentApprovalViewModel
+<h2>Appointment Approval</h2>
+
+<h3>Pending Approval</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pa in Model.PendingAppointments)
+        {
+            <tr>
+                <td>
+                    <a asp-action="AADetails" asp-route-id="@pa.AppointmentId">@Html.DisplayFor(modelpa => pa.User.FirstName) @Html.DisplayFor(modelpa => pa.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelaa => pa.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelpa => pa.StartTime) - @Html.DisplayFor(modelpa => pa.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Approved - Awaiting Confirmation</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var aa in Model.ApprovedAppointments)
+        {
+            <tr>
+                <td>
+                    <a asp-action="AADetails" asp-route-id="@aa.AppointmentId">@Html.DisplayFor(modelaa => aa.User.FirstName) @Html.DisplayFor(modelaa => aa.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelaa => aa.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelaa => aa.StartTime) - @Html.DisplayFor(modelaa => aa.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Confirmed</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ca in Model.ConfirmedAppointments)
+        {
+            <tr>
+                <td>
+                    <a asp-action="AADetails" asp-route-id="@ca.AppointmentId">@Html.DisplayFor(modelca => ca.User.FirstName) @Html.DisplayFor(modelca => ca.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelca => ca.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelca => ca.StartTime) - @Html.DisplayFor(modelca => ca.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

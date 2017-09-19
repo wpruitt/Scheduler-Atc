@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ATCScheduler.Models;
 using ATCScheduler.Data;
 using Microsoft.AspNetCore.Identity;
+using ATCScheduler.Models.ViewModels;
 
 namespace ATCScheduler.Controllers
 {
@@ -25,7 +26,13 @@ namespace ATCScheduler.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Appointment.Where(a => a.userId == GetCurrentUserAsync().Result.Id).ToListAsync());
+            var currentUserId = GetCurrentUserAsync().Result.Id;
+            AppointmentListViewModel model = new AppointmentListViewModel
+            {
+                Appointments = await _context.Appointment.Where(a => a.UserId.Equals(currentUserId)).ToListAsync()
+            };
+
+            return View(model);
         }
 
         // GET: Appointments/Details/5
@@ -46,6 +53,42 @@ namespace ATCScheduler.Controllers
             return View(appointment);
         }
 
+        // GET: Appointments/AADetails/5
+        public async Task<IActionResult> AADetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.Appointment
+                .SingleOrDefaultAsync(m => m.AppointmentId == id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            return View(appointment);
+        }
+
+        // Post: Appointment/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve(int id, [Bind("ApproverNote")]Appointment appointment)
+        {
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+            ModelState.Remove("User");
+            if (ModelState.IsValid)
+            {
+                appointment.Approver = currentUser;
+                appointment.RequestStatus = Appointment.Status.Confirmed;
+                _context.Update(appointment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("AppointmentApproval");
+            }
+            return View(appointment);
+        }
+
         // GET: Appointments/Create
         public IActionResult Create()
         {
@@ -61,7 +104,8 @@ namespace ATCScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-                appointment.userId = GetCurrentUserAsync().Result.Id;
+                appointment.UserId = GetCurrentUserAsync().Result.Id;
+                appointment.User = await GetCurrentUserAsync();
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -77,7 +121,7 @@ namespace ATCScheduler.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointment.SingleOrDefaultAsync(m => m.AppointmentId == id && m.userId == GetCurrentUserAsync().Result.Id);
+            var appointment = await _context.Appointment.SingleOrDefaultAsync(m => m.AppointmentId == id && m.UserId == GetCurrentUserAsync().Result.Id);
             if (appointment == null)
             {
                 return NotFound();
@@ -90,18 +134,19 @@ namespace ATCScheduler.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,Date,StartTime,EndTime,Medical,Description,ApproverNote,userId")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,Date,StartTime,EndTime,Medical,Description,ApproverNote,UserId,User")] Appointment appointment)
         {
             if (id != appointment.AppointmentId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid && appointment.userId == GetCurrentUserAsync().Result.Id)
+            if (ModelState.IsValid && appointment.UserId == GetCurrentUserAsync().Result.Id)
             {
                 try
                 {
                     appointment.RequestStatus = 0;
+                    appointment.User = await GetCurrentUserAsync();
                     _context.Update(appointment);
                     await _context.SaveChangesAsync();
                 }
@@ -153,6 +198,13 @@ namespace ATCScheduler.Controllers
         private bool AppointmentExists(int id)
         {
             return _context.Appointment.Any(e => e.AppointmentId == id);
+        }
+
+        public IActionResult AppointmentApproval()
+        {
+            var currentUserId = GetCurrentUserAsync().Result.Id;
+            AppointmentApprovalViewModel appointmentsToApprove = new AppointmentApprovalViewModel(_context, currentUserId);
+            return View(appointmentsToApprove);
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

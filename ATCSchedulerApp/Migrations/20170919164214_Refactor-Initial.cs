@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ATCScheduler.Migrations
 {
-    public partial class RefactorUser : Migration
+    public partial class RefactorInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
