@@ -1,4 +1,5 @@
 ﻿using ATCScheduler.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,16 @@ namespace ATCScheduler.Models.ViewModels
 
         public AppointmentApprovalViewModel(ApplicationDbContext context, string user)
         {
-            PendingAppointments = from pa in context.Appointment
+            PendingAppointments = (from pa in context.Appointment
                                     where pa.RequestStatus == 0
-                                    join u in context.ApplicationUser on pa.UserId equals u.Id into pau
-                                    select pa;
-            ApprovedAppointments = from aa in context.Appointment
+                                    join u in context.ApplicationUser on pa.UserId equals u.Id
+                                    select pa).Include("User");
+            ApprovedAppointments = (from aa in context.Appointment
                                     where aa.RequestStatus == Appointment.Status.Approved
-                                    select aa;
-            ConfirmedAppointments = from ca in context.Appointment
+                                    select aa).Include("User");
+            ConfirmedAppointments = (from ca in context.Appointment
                                     where ca.RequestStatus == Appointment.Status.Confirmed
-                                    select ca;
+                                    select ca).Include("User");
         }
     }
 }

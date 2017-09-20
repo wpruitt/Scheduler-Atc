@@ -1,4 +1,7 @@
-﻿using ATCScheduler.Models;
+﻿using ATCScheduler.Data;
+using ATCScheduler.Models;
+using ATCScheduler.Controllers;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
