@@ -15,11 +15,12 @@ namespace ATCScheduler.Models.ViewModels
 
         public IEnumerable<Appointment> ConfirmedAppointments { get; set; }
 
+        public AppointmentApprovalViewModel() { }
+
         public AppointmentApprovalViewModel(ApplicationDbContext context, string user)
         {
             PendingAppointments = (from pa in context.Appointment
                                     where pa.RequestStatus == 0
-                                    join u in context.ApplicationUser on pa.UserId equals u.Id
                                     select pa).Include("User");
             ApprovedAppointments = (from aa in context.Appointment
                                     where aa.RequestStatus == Appointment.Status.Approved

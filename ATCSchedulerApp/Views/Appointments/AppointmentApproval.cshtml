@@ -21,7 +21,7 @@
         {
             <tr>
                 <td>
-                    <a asp-action="AADetails" asp-route-id="@pa.AppointmentId">@Html.DisplayFor(modelpa => pa.User.FirstName) @Html.DisplayFor(modelpa => pa.User.LastName)</a>
+                    <a asp-action="Approve" asp-route-id="@pa.AppointmentId">@Html.DisplayFor(modelpa => pa.User.FirstName) @Html.DisplayFor(modelpa => pa.User.LastName)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelaa => pa.Date)
@@ -54,7 +54,7 @@
         {
             <tr>
                 <td>
-                    <a asp-action="AADetails" asp-route-id="@aa.AppointmentId">@Html.DisplayFor(modelaa => aa.User.FirstName) @Html.DisplayFor(modelaa => aa.User.LastName)</a>
+                    <a asp-action="Approve" asp-route-id="@aa.AppointmentId">@Html.DisplayFor(modelaa => aa.User.FirstName) @Html.DisplayFor(modelaa => aa.User.LastName)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelaa => aa.Date)
@@ -87,7 +87,7 @@
         {
             <tr>
                 <td>
-                    <a asp-action="AADetails" asp-route-id="@ca.AppointmentId">@Html.DisplayFor(modelca => ca.User.FirstName) @Html.DisplayFor(modelca => ca.User.LastName)</a>
+                    <a asp-action="Approve" asp-route-id="@ca.AppointmentId">@Html.DisplayFor(modelca => ca.User.FirstName) @Html.DisplayFor(modelca => ca.User.LastName)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelca => ca.Date)

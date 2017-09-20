@@ -54,14 +54,14 @@ namespace ATCScheduler.Controllers
         }
 
         // GET: Appointments/AADetails/5
-        public async Task<IActionResult> AADetails(int? id)
+        public async Task<IActionResult> Approve(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var appointment = await _context.Appointment
+            var appointment = await _context.Appointment.Include(a => a.User)
                 .SingleOrDefaultAsync(m => m.AppointmentId == id);
             if (appointment == null)
             {
@@ -74,10 +74,9 @@ namespace ATCScheduler.Controllers
         // Post: Appointment/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve(int id, [Bind("ApproverNote")]Appointment appointment)
+        public async Task<IActionResult> Approve(int id, [Bind("AppointmentId, UserId, User, Date, StartTime, EndTime, Medical, Description, RequestStatus, Approver, ApproverNote")]Appointment appointment)
         {
             ApplicationUser currentUser = await GetCurrentUserAsync();
-            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
                 appointment.Approver = currentUser;
@@ -132,7 +131,7 @@ namespace ATCScheduler.Controllers
         // POST: Appointments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPatch, ActionName("Approved")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,Date,StartTime,EndTime,Medical,Description,ApproverNote,UserId,User")] Appointment appointment)
         {
@@ -206,6 +205,13 @@ namespace ATCScheduler.Controllers
             AppointmentApprovalViewModel appointmentsToApprove = new AppointmentApprovalViewModel(_context, currentUserId);
             return View(appointmentsToApprove);
         }
+
+        //[HttpPatch, ActionName("AppointmentApproval")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> AppointmentApproval(int id)
+        //{
+
+        //}
 
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
