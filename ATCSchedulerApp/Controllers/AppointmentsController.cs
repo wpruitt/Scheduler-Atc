@@ -206,12 +206,14 @@ namespace ATCScheduler.Controllers
             return View(appointmentsToApprove);
         }
 
-        //[HttpPatch, ActionName("AppointmentApproval")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> AppointmentApproval(int id)
-        //{
-
-        //}
+        public bool ToConfirm(Appointment appointment)
+        { 
+            if (appointment.RequestStatus == Appointment.Status.Approved)
+            {
+                return true;
+            }
+            return false;
+        }
 
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
