@@ -80,7 +80,7 @@ namespace ATCScheduler.Controllers
             if (ModelState.IsValid)
             {
                 appointment.Approver = currentUser;
-                appointment.RequestStatus = Appointment.Status.Confirmed;
+                appointment.RequestStatus = Appointment.Status.Approved;
                 _context.Update(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("AppointmentApproval");
