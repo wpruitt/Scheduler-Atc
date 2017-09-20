@@ -1,4 +1,4 @@
-@model IEnumerable<ATCScheduler.Models.Appointment>
+@model ATCScheduler.Models.ViewModels.AppointmentListViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,52 +13,53 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                Start Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndTime)
+                End Time
             </th>
             <th width="70">
-                @Html.DisplayNameFor(model => model.Medical)
+                Medical
             </th>
             <th width="300">
-                @Html.DisplayNameFor(model => model.Description)
-            </th>            
+                Description
+            </th>
             <th>
-                @Html.DisplayNameFor(model => model.RequestStatus)
+                Request Status
             </th>
         </tr>
-        
+
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.AppointmentId">@Html.DisplayFor(modelItem => item.Date)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Medical)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.AppointmentId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Appointments)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.AppointmentId">@Html.DisplayFor(modelItem => item.Date)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medical)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestStatus)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AppointmentId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

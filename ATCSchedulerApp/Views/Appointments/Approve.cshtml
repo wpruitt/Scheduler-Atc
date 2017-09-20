@@ -1,0 +1,69 @@
+﻿@model ATCScheduler.Models.Appointment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Appointment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Medical)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Medical)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApproverNote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApproverNote)
+            <form asp-action="Approve" method="post">
+                <div class="form-group">
+                    <input type="hidden" asp-for="AppointmentId" />
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="User" />
+                    <input type="hidden" asp-for="Date" />
+                    <input type="hidden" asp-for="StartTime" />
+                    <input type="hidden" asp-for="EndTime" />
+                    <input type="hidden" asp-for="Medical" />
+                    <input type="hidden" asp-for="Description" />
+                    <input type="hidden" asp-for="RequestStatus" />
+                    <input asp-for="ApproverNote" class="form-control" />
+                    <span asp-validation-for="ApproverNote" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" value="AppointmentId" class="btn btn-default">Approve</button> | <a asp-action="AppointmentApproval">Back to Appointment Approvals</a>
+                </div>
+            </form>
+        </dd>
+    </dl>
+
+</div>

@@ -1,4 +1,7 @@
-﻿using ATCScheduler.Models;
+﻿using ATCScheduler.Data;
+using ATCScheduler.Models;
+using ATCScheduler.Controllers;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +16,9 @@ namespace ATCScheduler.Models
         [Key]
         public int AppointmentId { get; set; }
 
-        public string userId { get; set; }
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
         
         [Required]
         [DataType(DataType.Date)]
