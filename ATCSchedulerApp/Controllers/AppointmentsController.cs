@@ -120,7 +120,7 @@ namespace ATCScheduler.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointment.SingleOrDefaultAsync(m => m.AppointmentId == id && m.UserId == GetCurrentUserAsync().Result.Id);
+            var appointment = await _context.Appointment.Include(a => a.User).SingleOrDefaultAsync(m => m.AppointmentId == id && m.UserId == GetCurrentUserAsync().Result.Id);
             if (appointment == null)
             {
                 return NotFound();

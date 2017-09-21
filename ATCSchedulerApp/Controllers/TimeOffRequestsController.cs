@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ATCScheduler.Data;
 using ATCScheduler.Models;
 using Microsoft.AspNetCore.Identity;
+using ATCScheduler.Models.ViewModels;
 
 namespace ATCScheduler.Controllers
 {
@@ -25,7 +26,12 @@ namespace ATCScheduler.Controllers
         // GET: TimeOffRequests1
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TimeOffRequest.ToListAsync());
+            var currentUserId = GetCurrentUserAsync().Result.Id;
+            TORListViewModel model = new TORListViewModel
+            {
+                TORs = await _context.TimeOffRequest.Where(t => t.UserId.Equals(currentUserId)).ToListAsync()
+            };
+            return View(model);
         }
 
         // GET: TimeOffRequests1/Details/5
@@ -46,6 +52,42 @@ namespace ATCScheduler.Controllers
             return View(timeOffRequest);
         }
 
+        //GET: TimeOffRequests/Approve/{id}
+        public async Task<IActionResult> Approve(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var TOR = await _context.TimeOffRequest.Include(t => t.User)
+                .SingleOrDefaultAsync(t => t.TimeOffRequestId == id);
+
+            if (TOR == null)
+            {
+                return NotFound();
+            }
+
+            return View(TOR);
+        }
+
+        // Post: TimeOffRequest/Approve/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve(int id, [Bind("TimeOffRequestId, UserId, User, StartDate, StartTime, EndDate, EndTime, TORStatus, Approver, ApproverNotes")]TimeOffRequest TOR)
+        {
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+            if (ModelState.IsValid)
+            {
+                TOR.Approver = currentUser;
+                TOR.TORStatus = TimeOffRequest.Status.Approved;
+                _context.Update(TOR);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("TORApproval");
+            }
+            return View(TOR);
+        }
+
         // GET: TimeOffRequests1/Create
         public IActionResult Create()
         {
@@ -59,10 +101,10 @@ namespace ATCScheduler.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TimeOffRequestId,StartDate,StartTime,EndDate,EndTime,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
         {
-            timeOffRequest.UserId = GetCurrentUserAsync().Result.Id;
             if (ModelState.IsValid)
             {
-                
+                timeOffRequest.UserId = GetCurrentUserAsync().Result.Id;
+                timeOffRequest.User = await GetCurrentUserAsync();
                 _context.Add(timeOffRequest);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -78,7 +120,7 @@ namespace ATCScheduler.Controllers
                 return NotFound();
             }
 
-            var timeOffRequest = await _context.TimeOffRequest.SingleOrDefaultAsync(m => m.TimeOffRequestId == id);
+            var timeOffRequest = await _context.TimeOffRequest.Include(t => t.User).SingleOrDefaultAsync(m => m.TimeOffRequestId == id && m.UserId == GetCurrentUserAsync().Result.Id);
             if (timeOffRequest == null)
             {
                 return NotFound();
@@ -91,14 +133,14 @@ namespace ATCScheduler.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TimeOffRequestId,StartDate,StartTime,EndDate,EndTime,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("TimeOffRequestId,User,StartDate,StartTime,EndDate,EndTime,Description,Status,ApproverNotes")] TimeOffRequest timeOffRequest)
         {
             if (id != timeOffRequest.TimeOffRequestId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && timeOffRequest.UserId == GetCurrentUserAsync().Result.Id)
             {
                 try
                 {
@@ -154,6 +196,14 @@ namespace ATCScheduler.Controllers
         private bool TimeOffRequestExists(int id)
         {
             return _context.TimeOffRequest.Any(e => e.TimeOffRequestId == id);
+        }
+
+        public IActionResult TORApproval()
+        {
+            var currentUserId = GetCurrentUserAsync().Result.Id;
+            TORApprovalViewModel TORsToApprove = new TORApprovalViewModel(_context, currentUserId);
+            return View(TORsToApprove);
+
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

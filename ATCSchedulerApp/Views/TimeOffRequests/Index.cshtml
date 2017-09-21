@@ -1,4 +1,4 @@
-@model IEnumerable<ATCScheduler.Models.TimeOffRequest>
+@model ATCScheduler.Models.ViewModels.TORListViewModel
 
 @{
     Layout = "~/Views/Shared/_TimeOffRequestsLayout.cshtml";
@@ -13,29 +13,34 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate) | @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate) | @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th width="300">
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TORStatus)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ApproverNotes)
-                </th>
-            <th></th>
+            <th>
+                Controller
+            </th>  
+            <th style="min-width: 170px">
+                Start Date | Start Time
+            </th>
+            <th style="min-width: 170px">
+                End Date | End Time
+            </th>
+            <th style="max-width: 300px">
+                Description
+            </th>
+            <th>
+                Request Status
+            </th>
+            <th>
+               Approver Notes
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.TORs) {
         <tr>
             <td>
-                <a asp-action="Details" asp-route-id="@item.TimeOffRequestId">@Html.DisplayFor(modelItem => item.StartDate) | @Html.DisplayFor(modelItem => item.StartTime)</a>
+                <a asp-action="Details" asp-route-id="@item.TimeOffRequestId">@Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate) | @Html.DisplayFor(modelItem => item.StartTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate) | @Html.DisplayFor(modelItem => item.EndTime)

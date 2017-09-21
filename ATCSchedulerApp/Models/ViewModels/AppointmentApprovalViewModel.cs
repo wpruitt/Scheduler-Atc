@@ -15,9 +15,7 @@ namespace ATCScheduler.Models.ViewModels
 
         public IEnumerable<Appointment> ConfirmedAppointments { get; set; }
 
-        public AppointmentApprovalViewModel() { }
-
-        public AppointmentApprovalViewModel(ApplicationDbContext context, string user)
+        public AppointmentApprovalViewModel(ApplicationDbContext context, string UserId)
         {
             PendingAppointments = (from pa in context.Appointment
                                     where pa.RequestStatus == 0
