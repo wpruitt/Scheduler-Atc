@@ -206,13 +206,14 @@ namespace ATCScheduler.Controllers
             return View(appointmentsToApprove);
         }
 
-        public bool ToConfirm(Appointment appointment)
-        { 
-            if (appointment.RequestStatus == Appointment.Status.Approved)
-            {
-                return true;
-            }
-            return false;
+        public async Task<IActionResult> Confirm(int id)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var appointment = await _context.Appointment.SingleOrDefaultAsync(a => a.AppointmentId == id && a.User == currentUser);
+            appointment.RequestStatus = Appointment.Status.Confirmed;
+            _context.Appointment.Update(appointment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()
