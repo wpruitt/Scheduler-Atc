@@ -74,16 +74,27 @@ namespace ATCScheduler.Controllers
         // Post: TimeOffRequest/Approve/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve(int id, [Bind("TimeOffRequestId, UserId, User, StartDate, StartTime, EndDate, EndTime, TORStatus, Approver, ApproverNotes")]TimeOffRequest TOR)
+        public async Task<IActionResult> Approve(int id, [Bind("TimeOffRequestId, UserId, User, StartDate, StartTime, EndDate, EndTime, Description, TORStatus, Approver, ApproverNotes")]TimeOffRequest TOR)
         {
             ApplicationUser currentUser = await GetCurrentUserAsync();
             if (ModelState.IsValid)
             {
-                TOR.Approver = currentUser;
-                TOR.TORStatus = TimeOffRequest.Status.Approved;
-                _context.Update(TOR);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("TORApproval");
+                if (Request.Form.ContainsKey("approve"))
+                {
+                    TOR.Approver = currentUser;
+                    TOR.TORStatus = TimeOffRequest.Status.Approved;
+                    _context.Update(TOR);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("TORApproval");
+                }
+                else if (Request.Form.ContainsKey("deny"))
+                {
+                    TOR.Approver = currentUser;
+                    TOR.TORStatus = TimeOffRequest.Status.Denied;
+                    _context.Update(TOR);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("TORApproval");
+                }
             }
             return View(TOR);
         }
