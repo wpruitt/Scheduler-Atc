@@ -1,0 +1,140 @@
+@model ATCScheduler.Models.ViewModels.TORApprovalViewModel
+
+@{
+    Layout = "~/Views/Shared/_TimeOffRequestsLayout.cshtml";
+}
+
+<h2>TORApproval</h2>
+
+<h3>Pending Approval</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Start Date | Time
+            </th>
+            <th>
+                End Date | Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pt in Model.PendingTORs)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Approve" asp-route-id="@pt.TimeOffRequestId">@Html.DisplayFor(modelpt => pt.User.FirstName) @Html.DisplayFor(modelpt => pt.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelpt => pt.StartDate) | @Html.DisplayFor(modelpt => pt.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelpt => pt.EndDate) - @Html.DisplayFor(modelpt => pt.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Approved - Awaiting Confirmation</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Start Date | Time
+            </th>
+            <th>
+                End Date | Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var at in Model.ApprovedTORs)
+        {
+            <tr>
+                <td>
+                    <a asp-action="TADetails" asp-route-id="@at.TimeOffRequestId">@Html.DisplayFor(modelat => at.User.FirstName) @Html.DisplayFor(modelat => at.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelat => at.StartDate) | @Html.DisplayFor(modelat => at.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelat => at.EndDate) - @Html.DisplayFor(modelat => at.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Confirmed</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Start Date | Time
+            </th>
+            <th>
+                End Date | Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ct in Model.ConfirmedTORs)
+        {
+            <tr>
+                <td>
+                    <a asp-action="TADetails" asp-route-id="@ct.TimeOffRequestId">@Html.DisplayFor(modelct => ct.User.FirstName) @Html.DisplayFor(modelct => ct.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelct => ct.StartDate) | @Html.DisplayFor(modelct => ct.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelct => ct.EndDate) - @Html.DisplayFor(modelct => ct.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Denied</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Controller
+            </th>
+            <th>
+                Start Date | Time
+            </th>
+            <th>
+                End Date | Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dt in Model.DeniedTORs)
+        {
+            <tr>
+                <td>
+                    <a asp-action="TADetails" asp-route-id="@dt.TimeOffRequestId">@Html.DisplayFor(modeldt => dt.User.FirstName) @Html.DisplayFor(modeldt => dt.User.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modeldt => dt.StartDate) | @Html.DisplayFor(modeldt => dt.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelpt => dt.EndDate) - @Html.DisplayFor(modelpt => dt.EndTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
