@@ -76,6 +76,18 @@ namespace ATCScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
+                foreach (var s in model.SelectedSkillLevels)
+                {
+                    var skilllevel = await (from sl in _context.SkillLevel
+                                     where s == sl.SkillLevelId.ToString()
+                                     select sl).ToListAsync();
+                    var skill = from st in _context.SkillLevel
+                                where st.Title == skilllevel[0].Title
+                                select st;
+                        
+                        //model.Position.SkillLevels.Add(skilllevel[0]);
+                }
+
                 _context.Add(model.Position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");

@@ -29,7 +29,8 @@ namespace ATCScheduler.Controllers
             var currentUserId = GetCurrentUserAsync().Result.Id;
             AppointmentListViewModel model = new AppointmentListViewModel
             {
-                Appointments = await _context.Appointment.Where(a => a.UserId.Equals(currentUserId)).ToListAsync()
+                Appointments = await _context.Appointment.Where
+                (a => a.UserId.Equals(currentUserId)).ToListAsync()
             };
 
             return View(model);
