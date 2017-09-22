@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ATCScheduler.Models;
 using ATCScheduler.Data;
+using ATCScheduler.Models.ViewModels;
 
 namespace ATCScheduler.Controllers
 {
@@ -46,7 +47,25 @@ namespace ATCScheduler.Controllers
         // GET: Shifts/Create
         public IActionResult Create()
         {
-            return View();
+            CreateShiftViewModel model = new CreateShiftViewModel();
+            var positions = _context.Position.Select(p => new
+            {
+                PositionId = p.PositionId,
+                PositionsName = p.Title
+            }).ToList();
+
+            model.ListOfPositions = new List<SelectListItem>();
+            foreach (var position in positions)
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = position.PositionsName,
+                    Value = position.PositionId.ToString()
+                };
+                model.ListOfPositions.Add(selectList);
+            }
+            model.Positions = model.ListOfPositions;
+            return View(model);
         }
 
         // POST: Shifts/Create
@@ -54,15 +73,22 @@ namespace ATCScheduler.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShiftId,Title,StartTime,EndTime,Status,ATControllerId")] Shift shift)
+        public async Task<IActionResult> Create(CreateShiftViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(shift);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                //foreach (var p in model.SelectedPostions)
+                //{
+                //    Position position = from po in _context.Position
+                //                        where po.PositionId == p.
+                                        
+                //                      }
+                //model.Shift.RequiredPositions
+                //_context.Add(model.Shift);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction("Index");
             }
-            return View(shift);
+            return View(model);
         }
 
         // GET: Shifts/Edit/5

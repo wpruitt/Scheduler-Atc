@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ATCScheduler.Models;
 using ATCScheduler.Data;
+using ATCScheduler.Models.ViewModels;
 
 namespace ATCScheduler.Controllers
 {
@@ -46,7 +47,24 @@ namespace ATCScheduler.Controllers
         // GET: Positions/Create
         public IActionResult Create()
         {
-            return View();
+            CreatePositionViewModel model = new CreatePositionViewModel();
+            var skilllevels = _context.SkillLevel.Select(s => new
+            {
+                SkillLevelId = s.SkillLevelId,
+                SkillLevelName = s.Title
+            }).ToList();
+            model.ListOfSkillLevels = new List<SelectListItem>();
+            foreach (var skilllevel in skilllevels)
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = skilllevel.SkillLevelName,
+                    Value = skilllevel.SkillLevelId.ToString()
+                };
+                model.ListOfSkillLevels.Add(selectList);
+            }
+            model.SkillLevels = model.ListOfSkillLevels;
+            return View(model);
         }
 
         // POST: Positions/Create
@@ -54,15 +72,15 @@ namespace ATCScheduler.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PositionId,Title,Abbreviation")] Position position)
+        public async Task<IActionResult> Create(CreatePositionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(position);
+                _context.Add(model.Position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(position);
+            return View(model);
         }
 
         // GET: Positions/Edit/5

@@ -19,19 +19,22 @@ namespace ATCScheduler.Models
         public List<Position> RequiredPositions { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Time)]
         public DateTime StartTime { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Time)]
         public DateTime EndTime { get; set; }
 
         [DefaultValue("Uncovered")]
-        public string Status { get; set; }
-
-        public int ATControllerId { get; set; }
+        public Status ShiftStatus { get; set; }
 
         public ICollection<ATController> ATCControllers { get; set; }
 
+        public enum Status
+        {
+            Uncovered,
+            Covered
+        }
     }
 }

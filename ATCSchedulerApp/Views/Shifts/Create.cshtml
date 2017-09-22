@@ -1,8 +1,8 @@
-@model ATCScheduler.Models.Shift
+@model ATCScheduler.Models.ViewModels.CreateShiftViewModel
 
 @{
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_ShiftsLayout.cshtml";
-    ViewData["Title"] = "Create";
 }
 
 <h2>Create</h2>
@@ -13,38 +13,30 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Title" class="col-md-2 control-label"></label>
+            <label asp-for="Shift.Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Shift.Title" class="form-control" />
+                <span asp-validation-for="Shift.Title" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="StartTime" class="col-md-2 control-label"></label>
+            <label asp-for="Shift.StartTime" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
+                <input asp-for="Shift.StartTime" class="form-control" />
+                <span asp-validation-for="Shift.StartTime" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="EndTime" class="col-md-2 control-label"></label>
+            <label asp-for="Shift.EndTime" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
+                <input asp-for="Shift.EndTime" class="form-control" />
+                <span asp-validation-for="Shift.EndTime" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <label asp-for="ListOfPositions" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ATControllerId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ATControllerId" class="form-control" />
-                <span asp-validation-for="ATControllerId" class="text-danger"></span>
+                @Html.ListBoxFor(m => m.SelectedPostions, Model.ListOfPositions, new { size = 5 })
             </div>
         </div>
         <div class="form-group">
@@ -58,4 +50,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
