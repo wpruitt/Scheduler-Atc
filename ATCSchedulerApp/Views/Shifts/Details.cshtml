@@ -30,20 +30,20 @@
             @Html.DisplayFor(model => model.EndTime)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.ShiftStatus)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Status)
+            @Html.DisplayFor(model => model.ShiftStatus)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.ATControllerId)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.ATControllerId)
-        </dd>
+        </dd>*@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ShiftId">Edit</a> |
+    @*<a asp-action="Edit" asp-route-id="@Model.ShiftId">Edit</a> |*@
     <a asp-action="Index">Back to List</a>
 </div>

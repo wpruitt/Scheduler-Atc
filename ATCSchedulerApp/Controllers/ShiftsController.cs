@@ -75,18 +75,27 @@ namespace ATCScheduler.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateShiftViewModel model)
         {
+            ModelState.Remove("Shift.RequiredPositions");
             if (ModelState.IsValid)
             {
-                //foreach (var p in model.SelectedPostions)
-                //{
-                //    Position position = from po in _context.Position
-                //                        where po.PositionId == p.
-                                        
-                //                      }
-                //model.Shift.RequiredPositions
-                //_context.Add(model.Shift);
-                //await _context.SaveChangesAsync();
-                //return RedirectToAction("Index");
+                ShiftPosition shiftpos = new ShiftPosition();
+                
+                foreach (var p in model.SelectedPostions)
+                {
+                    var position = await (from po in _context.Position
+                                          where p == po.PositionId.ToString()
+                                          select po).ToListAsync();
+                    shiftpos.ShiftId = model.Shift.ShiftId;
+                    shiftpos.PositionId = position[0].PositionId;
+                    Position pos = new Position()
+                    {
+                        PositionId = position[0].PositionId,
+                        Abbreviation = position[0].Abbreviation,
+                        Title = position[0].Title                        
+                    };
+                    _context.ShiftPosition.Add(shiftpos);
+                }
+                //var reqshifts = from rs in _context.ShiftPosition 
             }
             return View(model);
         }

@@ -1,0 +1,31 @@
+@model ATCScheduler.Models.ShiftATController
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ShiftATController</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ShfitId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShfitId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ATController)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ATController.UserId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ShiftATControllerId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

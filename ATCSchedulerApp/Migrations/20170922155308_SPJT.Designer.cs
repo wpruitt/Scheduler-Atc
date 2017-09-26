@@ -9,9 +9,10 @@ using ATCScheduler.Models;
 namespace ATCScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170922155308_SPJT")]
+    partial class SPJT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -244,9 +245,13 @@ namespace ATCScheduler.Migrations
                     b.Property<int>("SkillLevelId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("PositionId");
+
                     b.Property<string>("Title");
 
                     b.HasKey("SkillLevelId");
+
+                    b.HasIndex("PositionId");
 
                     b.ToTable("SkillLevel");
                 });
@@ -457,7 +462,7 @@ namespace ATCScheduler.Migrations
             modelBuilder.Entity("ATCScheduler.Models.ShiftPosition", b =>
                 {
                     b.HasOne("ATCScheduler.Models.Position", "Position")
-                        .WithMany("SkillLevels")
+                        .WithMany()
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -465,6 +470,13 @@ namespace ATCScheduler.Migrations
                         .WithMany("RequiredPositions")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ATCScheduler.Models.SkillLevel", b =>
+                {
+                    b.HasOne("ATCScheduler.Models.Position")
+                        .WithMany("SkillLevels")
+                        .HasForeignKey("PositionId");
                 });
 
             modelBuilder.Entity("ATCScheduler.Models.TimeOffRequest", b =>

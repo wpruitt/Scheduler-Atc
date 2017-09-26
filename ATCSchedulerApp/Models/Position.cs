@@ -17,6 +17,6 @@ namespace ATCScheduler.Models
         [Required]
         public string Abbreviation { get; set; }
 
-        public ICollection<SkillLevel> SkillLevels { get; set; }
+        public IEnumerable<ShiftPosition> SkillLevels { get; set; }
     }
 }

@@ -5,28 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATCScheduler.Models;
 using ATCScheduler.Data;
-using ATCScheduler.Models.ViewModels;
+using ATCScheduler.Models;
 
 namespace ATCScheduler.Controllers
 {
-    public class PositionsController : Controller
+    public class Positions1Controller : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PositionsController(ApplicationDbContext context)
+        public Positions1Controller(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: Positions
+        // GET: Positions1
         public async Task<IActionResult> Index()
         {
             return View(await _context.Position.ToListAsync());
         }
 
-        // GET: Positions/Details/5
+        // GET: Positions1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,54 +43,29 @@ namespace ATCScheduler.Controllers
             return View(position);
         }
 
-        // GET: Positions/Create
+        // GET: Positions1/Create
         public IActionResult Create()
         {
-            CreatePositionViewModel model = new CreatePositionViewModel();
-            var skilllevels = _context.SkillLevel.Select(s => new
-            {
-                SkillLevelId = s.SkillLevelId,
-                SkillLevelName = s.Title
-            }).ToList();
-            model.ListOfSkillLevels = new List<SelectListItem>();
-            foreach (var skilllevel in skilllevels)
-            {
-                SelectListItem selectList = new SelectListItem()
-                {
-                    Text = skilllevel.SkillLevelName,
-                    Value = skilllevel.SkillLevelId.ToString()
-                };
-                model.ListOfSkillLevels.Add(selectList);
-            }
-            model.SkillLevels = model.ListOfSkillLevels;
-            return View(model);
+            return View();
         }
 
-        // POST: Positions/Create
+        // POST: Positions1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreatePositionViewModel model)
+        public async Task<IActionResult> Create([Bind("PositionId,Title,Abbreviation")] Position position)
         {
             if (ModelState.IsValid)
             {
-                foreach (var s in model.SelectedSkillLevels)
-                {
-                    var skilllevel = await (from sl in _context.SkillLevel
-                                     where s == sl.SkillLevelId.ToString()
-                                     select sl).ToListAsync();
-                    //model.Position.SkillLevelId = skilllevel[0].SkillLevelId;
-                }
-
-                _context.Add(model.Position);
+                _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(model);
+            return View(position);
         }
 
-        // GET: Positions/Edit/5
+        // GET: Positions1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,7 +81,7 @@ namespace ATCScheduler.Controllers
             return View(position);
         }
 
-        // POST: Positions/Edit/5
+        // POST: Positions1/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -142,7 +116,7 @@ namespace ATCScheduler.Controllers
             return View(position);
         }
 
-        // GET: Positions/Delete/5
+        // GET: Positions1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -160,7 +134,7 @@ namespace ATCScheduler.Controllers
             return View(position);
         }
 
-        // POST: Positions/Delete/5
+        // POST: Positions1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

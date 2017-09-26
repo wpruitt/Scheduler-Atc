@@ -12,5 +12,7 @@ namespace ATCScheduler.Models
         public int SkillLevelId { get; set; }
 
         public string Title { get; set; }
+
+        public IEnumerable<PositionSkillLevel> PositionSkillLevels { get; set; }
     }
 }

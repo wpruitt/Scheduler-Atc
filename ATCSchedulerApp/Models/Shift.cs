@@ -15,8 +15,10 @@ namespace ATCScheduler.Models
         [Required]
         public string Title { get; set; }
 
+        public int PositionId { get; set; }
+
         [Required]
-        public List<Position> RequiredPositions { get; set; }
+        public ICollection<ShiftPosition> RequiredPositions { get; set; }
 
         [Required]
         [DataType(DataType.Time)]
@@ -28,6 +30,8 @@ namespace ATCScheduler.Models
 
         [DefaultValue("Uncovered")]
         public Status ShiftStatus { get; set; }
+
+        public int ATCControllerId { get; set; }
 
         public ICollection<ATController> ATCControllers { get; set; }
 
