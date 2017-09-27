@@ -28,7 +28,7 @@ Using:
 
 - Add Migration and Update Database
 
-# Suggested Usage:
+### Suggested Usage:
 
 - Register multiple users
 - Create a couple appointments and time off requests
