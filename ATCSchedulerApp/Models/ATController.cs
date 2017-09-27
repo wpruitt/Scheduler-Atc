@@ -15,6 +15,7 @@ namespace ATCScheduler.Models
         [Required]
         public string UserId { get; set; }
 
+        [Required]
         public ApplicationUser User { get; set; }
 
         [Required]
@@ -22,7 +23,9 @@ namespace ATCScheduler.Models
 
         public SkillLevel SkillLevel { get; set; }
 
-        public List<Position> QualifiedPositions { get; set; }
+        public Position PositionId { get; set; }
+
+        public IEnumerable<Position> QualifiedPositions { get; set; }
 
         public bool FlyingStatus { get; set; }
     }

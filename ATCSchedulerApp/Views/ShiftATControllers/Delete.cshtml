@@ -1,0 +1,36 @@
+@model ATCScheduler.Models.ShiftATController
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ShiftATController</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ShiftATControllerId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.ShfitId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShfitId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ATController)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ATController.UserId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

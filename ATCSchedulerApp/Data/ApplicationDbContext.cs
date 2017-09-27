@@ -36,5 +36,11 @@ namespace ATCScheduler.Data
         public DbSet<ATCScheduler.Models.TimeOffRequest> TimeOffRequest { get; set; }
 
         public DbSet<ATCScheduler.Models.ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<ATCScheduler.Models.PositionSkillLevel> PositionSkillLevel { get; set; }
+
+        public DbSet<ATCScheduler.Models.ShiftPosition> ShiftPosition { get; set; }
+
+        public DbSet<ATCScheduler.Models.ShiftATController> ShiftATController { get; set; }
     }
 }

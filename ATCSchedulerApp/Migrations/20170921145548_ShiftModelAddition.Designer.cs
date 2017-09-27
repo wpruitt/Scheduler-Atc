@@ -9,9 +9,10 @@ using ATCScheduler.Models;
 namespace ATCScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170921145548_ShiftModelAddition")]
+    partial class ShiftModelAddition
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -118,8 +119,6 @@ namespace ATCScheduler.Migrations
 
                     b.Property<bool>("FlyingStatus");
 
-                    b.Property<int?>("PositionId1");
-
                     b.Property<int?>("ShiftId");
 
                     b.Property<int>("SkillLevelId");
@@ -128,8 +127,6 @@ namespace ATCScheduler.Migrations
                         .IsRequired();
 
                     b.HasKey("ControllerId");
-
-                    b.HasIndex("PositionId1");
 
                     b.HasIndex("ShiftId");
 
@@ -150,6 +147,8 @@ namespace ATCScheduler.Migrations
                     b.Property<string>("Abbreviation")
                         .IsRequired();
 
+                    b.Property<int?>("ShiftId");
+
                     b.Property<string>("Title")
                         .IsRequired();
 
@@ -157,25 +156,9 @@ namespace ATCScheduler.Migrations
 
                     b.HasIndex("ATControllerControllerId");
 
+                    b.HasIndex("ShiftId");
+
                     b.ToTable("Position");
-                });
-
-            modelBuilder.Entity("ATCScheduler.Models.PositionSkillLevel", b =>
-                {
-                    b.Property<int>("PositionSkillLevelId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("PositionId");
-
-                    b.Property<int>("SkillLevelId");
-
-                    b.HasKey("PositionSkillLevelId");
-
-                    b.HasIndex("PositionId");
-
-                    b.HasIndex("SkillLevelId");
-
-                    b.ToTable("PositionSkillLevel");
                 });
 
             modelBuilder.Entity("ATCScheduler.Models.Shift", b =>
@@ -183,11 +166,9 @@ namespace ATCScheduler.Migrations
                     b.Property<int>("ShiftId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ATCControllerId");
+                    b.Property<int>("ATControllerId");
 
                     b.Property<DateTime>("EndTime");
-
-                    b.Property<int>("PositionId");
 
                     b.Property<int>("ShiftStatus");
 
@@ -201,52 +182,18 @@ namespace ATCScheduler.Migrations
                     b.ToTable("Shift");
                 });
 
-            modelBuilder.Entity("ATCScheduler.Models.ShiftATController", b =>
-                {
-                    b.Property<int>("ShiftATControllerId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ATControllerId");
-
-                    b.Property<int>("ShfitId");
-
-                    b.Property<int?>("ShiftId");
-
-                    b.HasKey("ShiftATControllerId");
-
-                    b.HasIndex("ATControllerId");
-
-                    b.HasIndex("ShiftId");
-
-                    b.ToTable("ShiftATController");
-                });
-
-            modelBuilder.Entity("ATCScheduler.Models.ShiftPosition", b =>
-                {
-                    b.Property<int>("ShiftPositionId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("PositionId");
-
-                    b.Property<int>("ShiftId");
-
-                    b.HasKey("ShiftPositionId");
-
-                    b.HasIndex("PositionId");
-
-                    b.HasIndex("ShiftId");
-
-                    b.ToTable("ShiftPosition");
-                });
-
             modelBuilder.Entity("ATCScheduler.Models.SkillLevel", b =>
                 {
                     b.Property<int>("SkillLevelId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("PositionId");
+
                     b.Property<string>("Title");
 
                     b.HasKey("SkillLevelId");
+
+                    b.HasIndex("PositionId");
 
                     b.ToTable("SkillLevel");
                 });
@@ -403,10 +350,6 @@ namespace ATCScheduler.Migrations
 
             modelBuilder.Entity("ATCScheduler.Models.ATController", b =>
                 {
-                    b.HasOne("ATCScheduler.Models.Position", "PositionId")
-                        .WithMany()
-                        .HasForeignKey("PositionId1");
-
                     b.HasOne("ATCScheduler.Models.Shift")
                         .WithMany("ATCControllers")
                         .HasForeignKey("ShiftId");
@@ -427,44 +370,17 @@ namespace ATCScheduler.Migrations
                     b.HasOne("ATCScheduler.Models.ATController")
                         .WithMany("QualifiedPositions")
                         .HasForeignKey("ATControllerControllerId");
-                });
 
-            modelBuilder.Entity("ATCScheduler.Models.PositionSkillLevel", b =>
-                {
-                    b.HasOne("ATCScheduler.Models.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ATCScheduler.Models.SkillLevel", "SkillLevel")
-                        .WithMany("PositionSkillLevels")
-                        .HasForeignKey("SkillLevelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ATCScheduler.Models.ShiftATController", b =>
-                {
-                    b.HasOne("ATCScheduler.Models.ATController", "ATController")
-                        .WithMany()
-                        .HasForeignKey("ATControllerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ATCScheduler.Models.Shift", "Shift")
-                        .WithMany()
+                    b.HasOne("ATCScheduler.Models.Shift")
+                        .WithMany("RequiredPositions")
                         .HasForeignKey("ShiftId");
                 });
 
-            modelBuilder.Entity("ATCScheduler.Models.ShiftPosition", b =>
+            modelBuilder.Entity("ATCScheduler.Models.SkillLevel", b =>
                 {
-                    b.HasOne("ATCScheduler.Models.Position", "Position")
+                    b.HasOne("ATCScheduler.Models.Position")
                         .WithMany("SkillLevels")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ATCScheduler.Models.Shift", "Shift")
-                        .WithMany("RequiredPositions")
-                        .HasForeignKey("ShiftId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PositionId");
                 });
 
             modelBuilder.Entity("ATCScheduler.Models.TimeOffRequest", b =>
